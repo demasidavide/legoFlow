@@ -1,9 +1,14 @@
 //importazione moduli
 const express = require("express");
 const db = require("../database/initDb.js");
-
 const app = express();
 app.use(express.json());
+
+//importo get e post da containers.js
+const containersRouter = require('./routes/containers.js')
+app.use('/containers',containersRouter);
+
+
 
 //post per inserire dati in inventory
 app.post("/api/inventory/add", (req, res) => {

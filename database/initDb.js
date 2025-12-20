@@ -64,4 +64,4 @@ CREATE TABLE IF NOT EXISTS project_parts (
 
 console.log('Database e tabelle create!');
 
-module.exports=db;
+module.exports = db;
