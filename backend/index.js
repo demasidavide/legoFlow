@@ -5,8 +5,20 @@ const app = express();
 app.use(express.json());
 
 //importo get e post da containers.js
-const containersRouter = require('./routes/containers.js')
+const containersRouter = require('./routes/containers.js');
 app.use('/containers',containersRouter);
+
+//importo get e post da drawers.js
+const drawersRouter = require('./routes/drawers.js');
+app.use('/drawers',drawersRouter);
+
+//importo get e post da sections.js
+const sectionsRouter = require('./routes/sections.js');
+app.use('/sections',sectionsRouter);
+
+//imporot get e post da parts.js
+const partsRouter = require('./routes/parts.js');
+app.use('/parts',partsRouter);
 
 
 
