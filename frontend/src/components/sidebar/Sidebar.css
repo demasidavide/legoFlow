@@ -1,0 +1,28 @@
+@import '../../variables-css/variables.css';
+
+
+.container-sidebar{
+    width: fit-content;
+}
+.container-sidebar ul{
+    width: fit-content;
+    text-align: center;
+
+}
+.container-sidebar ul li{
+    list-style: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: solid 3px transparent;
+    padding: 5px;
+    transition: 0.5s all;
+
+    &:hover{
+        cursor: pointer;
+        border: solid 3px var(--confirm);
+        border-radius: 15px; 
+    }
+}
+.container-sidebar ul li.selected{
+    color:var(--confirm)
+}
