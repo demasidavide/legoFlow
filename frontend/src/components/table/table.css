@@ -1,0 +1,36 @@
+@import '../../variables-css/variables.css';
+ th:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+th:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.table-crp{
+    color: var(--header);
+    border-collapse: collapse;
+}
+thead{
+    background-color: var(--focus);
+    color: var(--neutral);
+     border-radius: 10px;
+}
+.first-line{
+   border-radius: 10px;
+  
+}
+.first-line th{
+    padding: 20px;
+    width: 100px;
+}
+tbody tr{
+    height: 40px;
+    text-align: center;
+    
+}
+tbody td{
+    border-bottom: solid 1px var(--header);
+}

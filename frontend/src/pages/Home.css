@@ -14,7 +14,30 @@ body{
     flex-direction: row;
 
 }
-.container-side{
+.container-home .container-side{
     height: 100%;
     width: 200px;
+}
+.container-home .container-main{
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+    background-color:var(--neutral);
+}
+.container-home .container-main .container-card{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    
+    width: 700px;
+    height: 200px;
+}
+.container-home .container-main .container-show{
+    background-color: var(--neutral);
+    width: 1000px;
+    height: 1000px;
 }

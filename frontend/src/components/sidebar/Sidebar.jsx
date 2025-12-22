@@ -5,8 +5,8 @@ function Sidebar(){
         <>
         <div className="container-sidebar">
             <ul>
-                <li className=''>INVENTARIO</li>
-                <li className=''>INSERISCI</li>
+                <li className=''><a href=''>INVENTARIO</a></li>
+                <li className=''><a href="../../pages/Structure.jsx">STRUTTURA</a></li>
             </ul>
         </div>
         
