@@ -20,6 +20,9 @@ app.use('/sections',sectionsRouter);
 const partsRouter = require('./routes/parts.js');
 app.use('/parts',partsRouter);
 
+//importo get e post da colors.js
+const colorsRouter = require('./routes/colors.js');
+app.use('/colors',colorsRouter);
 
 
 //post per inserire dati in inventory
