@@ -36,3 +36,13 @@ body{
 .container-acc{
     margin:10px
 }
+table{
+    min-width: 300px;
+}
+thead td{
+    text-align: center;
+}
+tbody tr td{
+    padding: 0;
+    border: none;
+}
