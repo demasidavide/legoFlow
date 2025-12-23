@@ -2,7 +2,9 @@
 const express = require("express");
 const db = require("../database/initDb.js");
 const app = express();
+const cors = require('cors');
 app.use(express.json());
+app.use(cors());
 
 //importo get e post da containers.js
 const containersRouter = require('./routes/containers.js');

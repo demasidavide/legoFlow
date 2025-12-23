@@ -1,0 +1,16 @@
+@import "../../../variables-css/variables.css";
+
+.confirm {
+    margin-left: 20PX;
+  font-weight: bold;
+  color: var(--confirm);
+  background-color: var(--neutral);
+  border: solid 2px var(--confirm);
+  transition: 0.5s all;
+  &:hover {
+    cursor: pointer;
+    color: var(--neutral);
+    background-color: var(--confirm);
+    border: solid 2px var(--confirm);
+  }
+}
