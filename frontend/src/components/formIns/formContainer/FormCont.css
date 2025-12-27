@@ -1,7 +1,7 @@
 @import "../../../variables-css/variables.css";
 
 .confirm {
-    margin-left: 20PX;
+    margin-left: 20px;
   font-weight: bold;
   color: var(--confirm);
   background-color: var(--neutral);

@@ -1,0 +1,16 @@
+@import "../../../variables-css/variables.css";
+
+select{
+    background-color: var(--neutral);
+    color: var(--header);
+    margin-left: 20px;
+    width: fit-content;
+    height: 50px;
+    padding: 8px;
+    border-radius: 10px; 
+    border:solid 2px var(--header);
+    
+}
+option{
+    padding: 8px 0;
+}
