@@ -14,3 +14,17 @@
     border: solid 2px var(--confirm);
   }
 }
+.message-ok{
+  width: fit-content;
+  border-radius: 10px;
+  padding: 10px;
+  color: var(--confirm);
+  border: solid 2px var(--confirm);
+}
+.message-no{
+  width: fit-content;
+  border-radius: 10px;
+  padding: 10px;
+  color: var(--warning);
+  border: solid 2px var(--warning);
+}

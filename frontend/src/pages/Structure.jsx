@@ -3,6 +3,7 @@ import Sidebar from "../components/sidebar/Sidebar";
 import FormCont from "../components/formIns/formContainer/FormCont";
 import FormDraw from "../components/formIns/formDrawers/FormDraw";
 import "./Structure.css";
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -21,15 +22,33 @@ function Structure() {
     handleContainers();
     handleDrawers();
   }, []);
-
+  // visualizzo la lista dei containers/cassettiere
   const handleContainers = async () => {
     const res = await axios.get("http://127.0.0.1:3000/containers/read");
     setContainers(res.data);
   };
-
+  //visualizzo la lista dei drawers/cassetti
   const handleDrawers = async () => {
     const res = await axios.get("http://127.0.0.1:3000/drawers/read");
     setDrawers(res.data);
+  };
+  //geastione cancellazione containers(errore se associato a drawer,ok se non associato)
+  const handleDeleteCont = async (id) => {
+    try {
+      const res = await axios.delete(
+        "http://127.0.0.1:3000/containers/delete",
+        { data: { id: id } }
+      );
+      if (res.status === 200) {
+        alert(res.data.message || "Cancellazione avvenuta con successo!");
+        handleContainers();
+      }
+    } catch (error) {
+      if (error.status === 500 || 400)
+        alert(
+          "Impossibile cancellare! Un Cassetto è associato a questa cassettiera"
+        );
+    }
   };
 
   return (
@@ -65,12 +84,19 @@ function Structure() {
                           <tr>
                             <td>ID</td>
                             <td>Nome</td>
+                            <td>Azioni</td>
                           </tr>
                         </thead>
                         <tbody>
                           <tr key={c.id}>
                             <td>{c.id}</td>
                             <td>{c.name}</td>
+                            <td>
+                              <DeleteForeverOutlinedIcon
+                                className="delete"
+                                onClick={() => handleDeleteCont(c.id)}
+                              ></DeleteForeverOutlinedIcon>
+                            </td>
                           </tr>
                         </tbody>
                       </table>

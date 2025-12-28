@@ -9,6 +9,15 @@ router.get('/read',(req,res)=>{
         res.json(rowDrawers);
 })
 
+//get per leggere nome cassettiera associata
+router.get('/read/name',(req,res)=>{
+    const nameContainers = db.prepare(`
+        SELECT drawers.id, drawers.container_id, containers.name AS container_name, drawers.name AS drawer_name
+        FROM drawers INNER JOIN containers ON containers.id = drawers.container_id
+        `).all();
+        res.json(nameContainers);
+})
+
 //post per inserire un drawers
 router.post('/add',(req,res)=>{
     const {container_id,name} = req.body;

@@ -30,4 +30,16 @@ router.post('/add',(req,res)=>{
     }
 })
 
+//delete- se assocata a un drawer errore altrimenti ok
+router.delete('/delete',(req,res)=>{
+    const { id } = req.body;
+    try{
+    db.prepare(`
+        DELETE FROM containers WHERE id = ?`).run(id);
+        res.json({succes:true, message:"Cancellazione avvenuta con successo"});
+    }catch(error){
+        res.status(400).json({error: "Impossibile camncellare"})
+    }
+})
+
 module.exports = router;

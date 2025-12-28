@@ -1,48 +1,58 @@
-@import '../variables-css/variables.css';
+@import "../variables-css/variables.css";
 
-body{
-    width: 100%;
-    height: 100%;
-    background-color: var(--header);
-    display: flex;
-    flex-direction: column;
+body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--header);
+  display: flex;
+  flex-direction: column;
 }
-.container-home{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
+.container-home {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.container-home .container-side {
+  height: 100%;
+  width: 200px;
+}
+.container-home .container-main {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  border-radius: 10px;
+  height: 100%;
+  width: 100%;
+  background-color: var(--neutral);
+}
 
+.container-home .container-main .container-show {
+  background-color: var(--neutral);
+  width: 1000px;
+  height: 1000px;
 }
-.container-home .container-side{
-    height: 100%;
-    width: 200px;
+.container-acc {
+  margin: 10px;
 }
-.container-home .container-main{
-    display: flex;
-    flex-direction: column;
-    margin-left: 10px;
-    border-radius: 10px;
-    height: 100%;
-    width: 100%;
-    background-color:var(--neutral);
+table {
+  min-width: 300px;
 }
-
-.container-home .container-main .container-show{
-    background-color: var(--neutral);
-    width: 1000px;
-    height: 1000px;
+thead td {
+  text-align: center;
 }
-.container-acc{
-    margin:10px
+tbody tr td {
+  padding: 0;
+  border: none;
 }
-table{
-    min-width: 300px;
+.delete {
+  color: var(--warning);
+  transition: transform 0.8s;
+  display: inline-block;
 }
-thead td{
-    text-align: center;
-}
-tbody tr td{
-    padding: 0;
-    border: none;
+.delete:hover {
+  cursor: pointer;
+  transform: scale(1.3);
+  border-radius: 5px;
+  border: solid 2px var(--warning);
 }
