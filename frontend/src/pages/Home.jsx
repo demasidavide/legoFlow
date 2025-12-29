@@ -4,6 +4,8 @@ import Sidebar from "../components/sidebar/Sidebar";
 import Card from "../components/card/Card";
 import Form from "../components/formSearch/Form";
 import Table from "../components/table/Table";
+import FormModCont from "../components/formIns/FormModCont/FormModCont";
+
 
 function Home() {
   return (
@@ -22,6 +24,7 @@ function Home() {
           <div className="container-show">
             <Form></Form>
             <Table></Table>
+            <FormModCont old="ciao"></FormModCont>
           </div>
         </div>
       </div>

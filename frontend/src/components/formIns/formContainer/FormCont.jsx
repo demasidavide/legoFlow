@@ -11,18 +11,18 @@ function FormCont() {
     e.preventDefault();
     try {
       await axios.post("http://127.0.0.1:3000/containers/add", { name });
-      setName("");
       setClassMessage("message-ok");
+      setName("");
       setMessage(`Cassettiera ${name} inserito con successo`);
-      setTimeout(() => setMessage(""), 5000);
-      setClassMessage("");
+      setTimeout(() => {setMessage("");setClassMessage("");}, 5000);
+      
     } catch (error) {
       console.log(error);
       setClassMessage("message-no");
       setMessage("Inserimento non riuscito");
-      setTimeout(() => setMessage(""), 5000);
-      setClassMessage("");
-    }
+      setTimeout(() => {setMessage("");setClassMessage("");}, 5000);
+      
+    }  
   };
 
   return (

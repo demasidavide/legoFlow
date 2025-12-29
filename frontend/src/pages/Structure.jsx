@@ -2,8 +2,12 @@ import Navbar from "../components/navbar/Navbar";
 import Sidebar from "../components/sidebar/Sidebar";
 import FormCont from "../components/formIns/formContainer/FormCont";
 import FormDraw from "../components/formIns/formDrawers/FormDraw";
+import FormModCont from "../components/formIns/FormModCont/FormModCont";
 import "./Structure.css";
+// icone
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
+import ModeIcon from '@mui/icons-material/Mode';
+//------
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -61,6 +65,7 @@ function Structure() {
         <div className="container-main">
           <div className="container-show">
             <div className="container-acc">
+              
               <Accordion
                 expanded={openContainers}
                 onChange={() => setOpenContainers(!openContainers)}
@@ -96,6 +101,9 @@ function Structure() {
                                 className="delete"
                                 onClick={() => handleDeleteCont(c.id)}
                               ></DeleteForeverOutlinedIcon>
+                              <ModeIcon
+                              className="modify"
+                              ></ModeIcon>
                             </td>
                           </tr>
                         </tbody>
@@ -143,6 +151,7 @@ function Structure() {
               </Accordion>
             </div>
           </div>
+            
         </div>
       </div>
     </>
