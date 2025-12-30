@@ -8,6 +8,14 @@ router.get('/read',(req,res)=>{
         SELECT * FROM sections`).all()
         return res.json(rowSections);
 });
+//get per leggere nome cassetto associato
+router.get('/read/name',(req,res)=>{
+    const nameDrawers = db.prepare(`
+        SELECT sections.id, sections.drawer_id, drawers.name AS drawerr_name, sections.name AS section_name
+        FROM sections INNER JOIN drawers ON drawers.id = sections.drawer_id
+        `).all();
+        res.json(nameDrawers);
+})
 
 //post per aggiungere una section ad un drawer
 router.post('/add',(req,res)=>{

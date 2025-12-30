@@ -2,6 +2,7 @@ import Navbar from "../components/navbar/Navbar";
 import Sidebar from "../components/sidebar/Sidebar";
 import FormCont from "../components/formIns/formContainer/FormCont";
 import FormDraw from "../components/formIns/formDrawers/FormDraw";
+import FormSect from "../components/formIns/formSections/FormSect";
 import FormModCont from "../components/formIns/FormModCont/FormModCont";
 import "./Structure.css";
 // icone
@@ -19,8 +20,10 @@ import axios from "axios";
 function Structure() {
   const [openContainers, setOpenContainers] = useState(false);
   const [openDrawers, setOpenDrawers] = useState(false);
+  const [openSections, setOpenSections] = useState(false);
   const [containers, setContainers] = useState([]);
   const [drawers, setDrawers] = useState([]);
+  const [sections, setSections] = useState([]);
   const [modContId, setModContId] = useState(null);
   const [modDrawId, setModDrawId] = useState(null);
   const [alertOk, setAlertOk] = useState(null);
@@ -40,6 +43,12 @@ function Structure() {
   const handleDrawers = async () => {
     const res = await axios.get("http://127.0.0.1:3000/drawers/read/name");
     setDrawers(res.data);
+  };
+  //---------------------------------------------------------------------------------
+  //visualizzo la lista sezioni------------------------------------------------------
+  const handlesections = async () => {
+    const res = await axios.get("http://127.0.0.1:3000/sections/read/name");
+    setSections(res.data);
   };
   //---------------------------------------------------------------------------------
   //geastione cancellazione containers(errore se associato a drawer,ok se non associato)
@@ -211,6 +220,70 @@ function Structure() {
                 <AccordionDetails>
                   <Typography component="div">
                     <FormDraw></FormDraw>
+                    {drawers.map((d) => (
+                      <table>
+                        <thead>
+                          <tr>
+                            <td>ID Cassettiera</td>
+                            <td>Nome Cassettiera</td>
+                            <td>ID</td>
+                            <td>Nome Cassetto</td>
+                            <td>Azioni</td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr key={d.id}>
+                            <td>{d.container_id}</td>
+                            <td>{d.container_name}</td>
+                            <td>{d.id}</td>
+                            <td>{d.drawer_name}</td>
+                            <td>
+                              <DeleteForeverOutlinedIcon
+                                className="delete"
+                                onClick={() => handleDeletDraw(d.id)}
+                              ></DeleteForeverOutlinedIcon>
+                              <ModeIcon
+                                className="modify"
+                                onClick={() => setModDrawId(d.id)}
+                              ></ModeIcon>
+                              {modDrawId === d.id ? (
+                                <FormModCont
+                                  id={d.id}
+                                  old={d.drawer_name}
+                                  close={() => setModDrawId(null)}
+                                  onSubmit={handleSubmitDrawer}
+                                  alertOk={alertOk}
+                                  setAlertOk={setAlertOk}
+                                  alertNo={alertNo}
+                                  setAlertNo={setAlertNo}
+                                ></FormModCont>
+                              ) : (
+                                ""
+                              )}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    ))}
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+              {/* accordion per sezioni--------------------------------------------------------------- */}
+              <Accordion
+                expanded={openSections}
+                onChange={() => setOpenSections(!openSections)}
+                onClick={handlesections}
+              >
+                <AccordionSummary
+                  expandIcon={<ArrowDownwardIcon />}
+                  aria-controls="panel1-content"
+                  id="panel1-header"
+                >
+                  <Typography component="span">Inserisci Sezione</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography component="div">
+                    <FormSect></FormSect>
                     {drawers.map((d) => (
                       <table>
                         <thead>
