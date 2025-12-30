@@ -37,4 +37,16 @@ router.post('/add',(req,res)=>{
     }
 })
 
+//delete per cancellazione 
+router.delete('/delete',(req,res)=>{
+    const { id } = req.body;
+    try{
+    db.prepare(`
+        DELETE FROM drawers WHERE id = ?`).run(id);
+        res.status(200).json({succes:true, message:"Cancellazione avvenuta con successo"});
+    }catch(error){
+        res.status(403).json({error: "Impossibile camncellare"})
+    }
+})
+
 module.exports = router;

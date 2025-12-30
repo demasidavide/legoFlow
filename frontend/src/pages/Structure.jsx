@@ -6,7 +6,7 @@ import FormModCont from "../components/formIns/FormModCont/FormModCont";
 import "./Structure.css";
 // icone
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
-import ModeIcon from '@mui/icons-material/Mode';
+import ModeIcon from "@mui/icons-material/Mode";
 //------
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -34,7 +34,7 @@ function Structure() {
   };
   //visualizzo la lista dei drawers/cassetti
   const handleDrawers = async () => {
-    const res = await axios.get("http://127.0.0.1:3000/drawers/read");
+    const res = await axios.get("http://127.0.0.1:3000/drawers/read/name");
     setDrawers(res.data);
   };
   //geastione cancellazione containers(errore se associato a drawer,ok se non associato)
@@ -54,7 +54,22 @@ function Structure() {
           "Impossibile cancellare! Un Cassetto è associato a questa cassettiera"
         );
     }
-  };
+  }
+  //gestione cancellazione cassetto,drawer
+  const handleDeletDraw = async(id)=>{
+    try{
+      const res = await axios.delete("http://127.0.0.1:3000/drawers/delete", { data : { id : id }});
+      if (res.status === 200) {
+        alert(res.data.message || "Cancellazione avvenuta con successo!");
+        handleDrawers();
+    }
+  }catch (error) {
+      if (error.status === 500 || 400 || 403)
+        alert(
+          "Errore-Impossibile cancellare! "
+        );
+    }
+ }
 
   return (
     <>
@@ -66,7 +81,6 @@ function Structure() {
         <div className="container-main">
           <div className="container-show">
             <div className="container-acc">
-              
               <Accordion
                 expanded={openContainers}
                 onChange={() => setOpenContainers(!openContainers)}
@@ -91,9 +105,7 @@ function Structure() {
                             <td>ID</td>
                             <td>Nome</td>
                             <td>Azioni</td>
-                            
                           </tr>
-                          
                         </thead>
                         <tbody>
                           <tr key={c.id}>
@@ -105,20 +117,22 @@ function Structure() {
                                 onClick={() => handleDeleteCont(c.id)}
                               ></DeleteForeverOutlinedIcon>
                               <ModeIcon
-                              className="modify"
-                              onClick={()=>setModContId(c.id)}
+                                className="modify"
+                                onClick={() => setModContId(c.id)}
                               ></ModeIcon>
-                              {modContId === c.id ? 
-                              <FormModCont 
-                              id={c.id}
-                              old={c.name}
-                              close={()=>setModContId(null)}></FormModCont>
-                            : ""}
+                              {modContId === c.id ? (
+                                <FormModCont
+                                  id={c.id}
+                                  old={c.name}
+                                  close={() => setModContId(null)}
+                                ></FormModCont>
+                              ) : (
+                                ""
+                              )}
                             </td>
                           </tr>
                         </tbody>
                       </table>
-                      
                     ))}
                   </Typography>
                 </AccordionDetails>
@@ -143,16 +157,38 @@ function Structure() {
                       <table>
                         <thead>
                           <tr>
-                            <td>ID</td>
                             <td>ID Cassettiera</td>
+                            <td>Nome Cassettiera</td>
+                            <td>ID</td>
                             <td>Nome Cassetto</td>
+                            <td>Azioni</td>
                           </tr>
                         </thead>
                         <tbody>
                           <tr key={d.id}>
-                            <td>{d.id}</td>
                             <td>{d.container_id}</td>
-                            <td>{d.name}</td>
+                            <td>{d.container_name}</td>
+                            <td>{d.id}</td>
+                            <td>{d.drawer_name}</td>
+                            <td>
+                              <DeleteForeverOutlinedIcon
+                                className="delete"
+                               onClick={()=>handleDeletDraw(d.id)}
+                              ></DeleteForeverOutlinedIcon>
+                              <ModeIcon
+                                className="modify"
+                                
+                              ></ModeIcon>
+                              {modContId === d.id ? (
+                                <FormModCont
+                                  id={d.id}
+                                  old={d.drawer_name}
+                                  close={() => setModContId(null)}
+                                ></FormModCont>
+                              ) : (
+                                ""
+                              )}
+                            </td>
                           </tr>
                         </tbody>
                       </table>
@@ -162,7 +198,6 @@ function Structure() {
               </Accordion>
             </div>
           </div>
-            
         </div>
       </div>
     </>
