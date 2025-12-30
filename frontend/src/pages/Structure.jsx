@@ -21,11 +21,12 @@ function Structure() {
   const [openDrawers, setOpenDrawers] = useState(false);
   const [containers, setContainers] = useState([]);
   const [drawers, setDrawers] = useState([]);
+  const [modContId, setModContId] = useState(null);
 
   useEffect(() => {
     handleContainers();
     handleDrawers();
-  }, []);
+  }, [modContId]);
   // visualizzo la lista dei containers/cassettiere
   const handleContainers = async () => {
     const res = await axios.get("http://127.0.0.1:3000/containers/read");
@@ -90,7 +91,9 @@ function Structure() {
                             <td>ID</td>
                             <td>Nome</td>
                             <td>Azioni</td>
+                            
                           </tr>
+                          
                         </thead>
                         <tbody>
                           <tr key={c.id}>
@@ -103,11 +106,19 @@ function Structure() {
                               ></DeleteForeverOutlinedIcon>
                               <ModeIcon
                               className="modify"
+                              onClick={()=>setModContId(c.id)}
                               ></ModeIcon>
+                              {modContId === c.id ? 
+                              <FormModCont 
+                              id={c.id}
+                              old={c.name}
+                              close={()=>setModContId(null)}></FormModCont>
+                            : ""}
                             </td>
                           </tr>
                         </tbody>
                       </table>
+                      
                     ))}
                   </Typography>
                 </AccordionDetails>

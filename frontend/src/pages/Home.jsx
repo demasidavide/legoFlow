@@ -24,7 +24,6 @@ function Home() {
           <div className="container-show">
             <Form></Form>
             <Table></Table>
-            <FormModCont old="ciao"></FormModCont>
           </div>
         </div>
       </div>
