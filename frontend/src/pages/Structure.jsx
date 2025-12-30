@@ -22,21 +22,26 @@ function Structure() {
   const [containers, setContainers] = useState([]);
   const [drawers, setDrawers] = useState([]);
   const [modContId, setModContId] = useState(null);
+  const [modDrawId, setModDrawId] = useState(null);
+  const [alertOk, setAlertOk] = useState(null);
+  const [alertNo, setAlertNo] = useState(null);
 
   useEffect(() => {
     handleContainers();
     handleDrawers();
-  }, [modContId]);
-  // visualizzo la lista dei containers/cassettiere
+  }, [modContId,modDrawId]);
+  // visualizzo la lista dei containers/cassettiere----------------------------------
   const handleContainers = async () => {
     const res = await axios.get("http://127.0.0.1:3000/containers/read");
     setContainers(res.data);
   };
-  //visualizzo la lista dei drawers/cassetti
+  //---------------------------------------------------------------------------------
+  //visualizzo la lista dei drawers/cassetti-----------------------------------------
   const handleDrawers = async () => {
     const res = await axios.get("http://127.0.0.1:3000/drawers/read/name");
     setDrawers(res.data);
   };
+  //---------------------------------------------------------------------------------
   //geastione cancellazione containers(errore se associato a drawer,ok se non associato)
   const handleDeleteCont = async (id) => {
     try {
@@ -54,23 +59,71 @@ function Structure() {
           "Impossibile cancellare! Un Cassetto è associato a questa cassettiera"
         );
     }
-  }
-  //gestione cancellazione cassetto,drawer
-  const handleDeletDraw = async(id)=>{
-    try{
-      const res = await axios.delete("http://127.0.0.1:3000/drawers/delete", { data : { id : id }});
+  };
+  //----------------------------------------------------------------------------------
+  //gestione cancellazione cassetto,drawer--------------------------------------------
+  const handleDeletDraw = async (id) => {
+    try {
+      const res = await axios.delete("http://127.0.0.1:3000/drawers/delete", {
+        data: { id: id },
+      });
       if (res.status === 200) {
         alert(res.data.message || "Cancellazione avvenuta con successo!");
         handleDrawers();
-    }
-  }catch (error) {
+      }
+    } catch (error) {
       if (error.status === 500 || 400 || 403)
-        alert(
-          "Errore-Impossibile cancellare! "
-        );
+        alert("Errore-Impossibile cancellare! ");
     }
- }
-
+  };
+  //-------------------------------------------------------------------------------------
+  //gestione modifica nome container-----------------------------------------------------
+  const handleSubmitContainer = async (formData, close) => {
+    try {
+      const res = await axios.put(
+        "http://127.0.0.1:3000/containers/edit",
+        formData
+      );
+      if (res.status === 200) {
+        setAlertOk(true);
+        setTimeout(() => {
+          setAlertOk(null);
+          setModContId(null);
+        }, 3000);
+        
+      }
+    } catch (error) {
+      setAlertNo(true);
+      setTimeout(() => {
+        setAlertNo(null);
+      }, 3000);
+    }
+  };
+  //-------------------------------------------------------------------------------------
+  //gestione per modifica cassetto-------------------------------------------------------
+  // Funzione per submit cassetto
+  const handleSubmitDrawer = async (formData, close) => {
+    try {
+      const res = await axios.put(
+        "http://127.0.0.1:3000/drawers/edit",
+        formData
+      );
+      if (res.status === 200) {
+        setAlertOk(true);
+        setTimeout(() => {
+          setAlertOk(null);
+          setModDrawId(null);
+        }, 3000);
+        
+      }
+    } catch (error) {
+      setAlertNo(true);
+      setTimeout(() => {
+        setAlertNo(null);
+      }, 3000);
+    }
+  };
+  //-------------------------------------------------------------------------------------
   return (
     <>
       <Navbar></Navbar>
@@ -124,7 +177,12 @@ function Structure() {
                                 <FormModCont
                                   id={c.id}
                                   old={c.name}
+                                  onSubmit={handleSubmitContainer}
                                   close={() => setModContId(null)}
+                                  alertOk={alertOk}
+                                  setAlertOk={setAlertOk}
+                                  alertNo={alertNo}
+                                  setAlertNo={setAlertNo}
                                 ></FormModCont>
                               ) : (
                                 ""
@@ -173,17 +231,22 @@ function Structure() {
                             <td>
                               <DeleteForeverOutlinedIcon
                                 className="delete"
-                               onClick={()=>handleDeletDraw(d.id)}
+                                onClick={() => handleDeletDraw(d.id)}
                               ></DeleteForeverOutlinedIcon>
                               <ModeIcon
                                 className="modify"
-                                
+                                onClick={() => setModDrawId(d.id)}
                               ></ModeIcon>
-                              {modContId === d.id ? (
+                              {modDrawId === d.id ? (
                                 <FormModCont
                                   id={d.id}
                                   old={d.drawer_name}
-                                  close={() => setModContId(null)}
+                                  close={() => setModDrawId(null)}
+                                  onSubmit={handleSubmitDrawer}
+                                  alertOk={alertOk}
+                                  setAlertOk={setAlertOk}
+                                  alertNo={alertNo}
+                                  setAlertNo={setAlertNo}
                                 ></FormModCont>
                               ) : (
                                 ""

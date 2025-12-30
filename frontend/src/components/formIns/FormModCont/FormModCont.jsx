@@ -5,39 +5,19 @@ import CloseIcon from "@mui/icons-material/Close";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 
-function FormModCont({ old, close, id }) {
-  const [alertOk, setAlertOk] = useState(null);
-  const [alertNo, setAlertNo] = useState(null);
+function FormModCont({ old, close, onSubmit, id, alertOk, alertNo }) {
   const [newName, setNewName] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.put("http://127.0.0.1:3000/containers/edit", {
-        id: id, // oppure solo id, se usi la shorthand
-        name: newName,
-      });
-      if (res.status === 200) {
-        setAlertOk(true);
-        setTimeout(() => {
-          setAlertOk(null);
-          close();
-        }, 3000);
-      }
-    } catch (error) {
-      setAlertNo(true);
-      setTimeout(() => {
-        setAlertNo(null);
-      }, 5000);
-    }
+    onSubmit({ id, name: newName, close });
   };
 
   return (
     <>
-      
       <form className="modifica" onSubmit={handleSubmit}>
         <CloseIcon className="close" onClick={close}></CloseIcon>
-        <label className="selected">Cassettiera Selezionata:</label>
+        <label className="selected">Hai selezionato:</label>
         <label className="selected-name">{old}</label>
         <input
           className="new-name"
@@ -48,19 +28,19 @@ function FormModCont({ old, close, id }) {
         ></input>
         <button type="submit">Modifica</button>
         {alertOk && (
-        <Stack sx={{ width: "80%" }} spacing={2}>
-          <Alert variant="filled" severity="success">
-            Modifica avvenuta con successo.
-          </Alert>
-        </Stack>
-      )}
-      {alertNo && (
-        <Stack sx={{ width: "80%" }} spacing={2}>
-          <Alert variant="filled" severity="warning">
-            Attenzione, impossibile effettuare la modifica.
-          </Alert>
-        </Stack>
-      )}
+          <Stack sx={{ width: "80%" }} spacing={2}>
+            <Alert variant="filled" severity="success">
+              Modifica avvenuta con successo.
+            </Alert>
+          </Stack>
+        )}
+        {alertNo && (
+          <Stack sx={{ width: "80%" }} spacing={2}>
+            <Alert variant="filled" severity="warning">
+              Attenzione, impossibile effettuare la modifica.
+            </Alert>
+          </Stack>
+        )}
       </form>
     </>
   );

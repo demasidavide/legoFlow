@@ -3,7 +3,6 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 
 function FormDraw() {
-  const [drawers, setDrawers] = useState([]);
   const [container, setContainer] = useState([]);
   const [idCont, setIdCont] = useState("");
   const [name, setName] = useState("");
@@ -30,17 +29,15 @@ function FormDraw() {
         container_id: Number(idCont),
         name: name,
       });
-      setDrawers(res.data);
       setClassMessage("message-ok");
-      setName("");
       setMessage(`Cassetto ${name} inserito con successo`);
-      setTimeout(() => setMessage(""), 5000);
-      setClassMessage("");
+      setTimeout(() => {setMessage(""); setClassMessage("");}, 3000);
+     
     } catch (error) {
       setClassMessage("message-no");
       setMessage("Inserimento non riuscito");
-      setTimeout(() => setMessage(""), 5000);
-      setClassMessage("");
+      setTimeout(() => {setMessage(""); setClassMessage("");}, 3000);
+      
     }
   };
 
@@ -48,12 +45,13 @@ function FormDraw() {
     <>
       <form onSubmit={handleSubmit}>
         <input
+        required
           type="text"
           placeholder="Inserisci nome"
           value={name}
           onChange={(e) => setName(e.target.value)}
         ></input>
-        <select value={idCont} onChange={(e) => setIdCont(e.target.value)}>
+        <select required value={idCont} onChange={(e) => setIdCont(e.target.value)}>
           <option value="">Seleziona Cassettiera</option>
           {container.map((c) => (
             <option key={c.id} value={c.id}>

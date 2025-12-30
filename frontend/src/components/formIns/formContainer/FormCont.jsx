@@ -29,6 +29,7 @@ function FormCont() {
     <>
       <form onSubmit={handleSubmit}>
         <input
+        required
           type="text"
           placeholder="Inserisci nome"
           value={name}

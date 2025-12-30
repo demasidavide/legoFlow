@@ -36,6 +36,22 @@ router.post('/add',(req,res)=>{
             }
     }
 })
+//put per modifica nome
+router.put('/edit',(req,res)=>{
+    const { id, name } = req.body;
+    if(!id||!name){
+        return res.status(400).json({error:"Id o nome non corretto"});
+    }
+    try{
+        db.prepare(`
+            UPDATE drawers SET name = ?
+            WHERE id = ?
+            `).run(name,id);
+            res.status(200).json({ success: true, message: "Nome cassetto aggiornato" });
+    }catch(error){
+        res.status(403).json({error:"Update non riuscito"});
+    }
+})
 
 //delete per cancellazione 
 router.delete('/delete',(req,res)=>{
