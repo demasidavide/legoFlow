@@ -28,5 +28,33 @@ router.post('/add',(req,res)=>{
                 res.json({success: true, message: "Colore aggiunto"})
         }
 });
+//delete per cancellazione colore
+//delete per cancellazione
+router.delete('/delete',(req,res)=>{
+    const { id } = req.body;
+    try{
+    db.prepare(`
+        DELETE FROM colors WHERE id = ?`).run(id);
+        res.status(200).json({succes:true, message:"Cancellazione avvenuta con successo"});
+    }catch(error){
+        res.status(403).json({error: "Impossibile cancellare"})
+    }
+})
+//put per modifica nome
+router.put('/edit',(req,res)=>{
+    const { id, newId, name } = req.body;
+    if(!id||!name){
+        return res.status(400).json({error:"Id o nome non corretto"});
+    }
+    try{
+        db.prepare(`
+            UPDATE colors SET id = ?, name = ?
+            WHERE id = ?
+            `).run(newId, name, id);
+            res.status(200).json({ success: true, message: "Colore aggiornato" });
+    }catch(error){
+        res.status(403).json({error:"Update non riuscito"});
+    }
+})
 
 module.exports = router;
