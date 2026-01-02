@@ -11,7 +11,7 @@ router.get('/read',(req,res)=>{
 //get per leggere nome cassetto associato
 router.get('/read/name',(req,res)=>{
     const nameDrawers = db.prepare(`
-        SELECT sections.id, sections.drawer_id, drawers.name AS drawerr_name, sections.name AS section_name
+        SELECT sections.id, sections.drawer_id, drawers.name AS drawer_name, sections.name AS section_name
         FROM sections INNER JOIN drawers ON drawers.id = sections.drawer_id
         `).all();
         res.json(nameDrawers);
@@ -33,6 +33,33 @@ router.post('/add',(req,res)=>{
                     VALUES (?, ?)`).run(drawer_id,name);
                     res.json({ success: true, message: "Section aggiunta"});
             }
+    }
+})
+//delete per cancellazione
+router.delete('/delete',(req,res)=>{
+    const { id } = req.body;
+    try{
+    db.prepare(`
+        DELETE FROM sections WHERE id = ?`).run(id);
+        res.status(200).json({succes:true, message:"Cancellazione avvenuta con successo"});
+    }catch(error){
+        res.status(403).json({error: "Impossibile camncellare"})
+    }
+})
+//put per modifica nome
+router.put('/edit',(req,res)=>{
+    const { id, name } = req.body;
+    if(!id||!name){
+        return res.status(400).json({error:"Id o nome non corretto"});
+    }
+    try{
+        db.prepare(`
+            UPDATE sections SET name = ?
+            WHERE id = ?
+            `).run(name,id);
+            res.status(200).json({ success: true, message: "Nome Sezione aggiornata" });
+    }catch(error){
+        res.status(403).json({error:"Update non riuscito"});
     }
 })
 

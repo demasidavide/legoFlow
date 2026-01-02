@@ -26,13 +26,15 @@ function Structure() {
   const [sections, setSections] = useState([]);
   const [modContId, setModContId] = useState(null);
   const [modDrawId, setModDrawId] = useState(null);
+  const [modSectId, setModSectId] = useState(null);
   const [alertOk, setAlertOk] = useState(null);
   const [alertNo, setAlertNo] = useState(null);
 
   useEffect(() => {
     handleContainers();
     handleDrawers();
-  }, [modContId,modDrawId]);
+    handleSections();
+  }, [modContId,modDrawId,modSectId,openContainers,openDrawers,openSections]);
   // visualizzo la lista dei containers/cassettiere----------------------------------
   const handleContainers = async () => {
     const res = await axios.get("http://127.0.0.1:3000/containers/read");
@@ -46,7 +48,7 @@ function Structure() {
   };
   //---------------------------------------------------------------------------------
   //visualizzo la lista sezioni------------------------------------------------------
-  const handlesections = async () => {
+  const handleSections = async () => {
     const res = await axios.get("http://127.0.0.1:3000/sections/read/name");
     setSections(res.data);
   };
@@ -86,6 +88,22 @@ function Structure() {
     }
   };
   //-------------------------------------------------------------------------------------
+  //gestione cancellazione sezioni-------------------------------------------------------
+  const handleDeleteSection = async (id) => {
+    try {
+      const res = await axios.delete("http://127.0.0.1:3000/sections/delete", {
+        data: { id: id },
+      });
+      if (res.status === 200) {
+        alert(res.data.message || "Cancellazione avvenuta con successo!");
+        handleSections();
+      }
+    } catch (error) {
+      if (error.status === 500 || 400 || 403)
+        alert("Errore-Impossibile cancellare ");
+    }
+  };
+  //-------------------------------------------------------------------------------------
   //gestione modifica nome container-----------------------------------------------------
   const handleSubmitContainer = async (formData, close) => {
     try {
@@ -122,6 +140,29 @@ function Structure() {
         setTimeout(() => {
           setAlertOk(null);
           setModDrawId(null);
+        }, 3000);
+        
+      }
+    } catch (error) {
+      setAlertNo(true);
+      setTimeout(() => {
+        setAlertNo(null);
+      }, 3000);
+    }
+  };
+  //-------------------------------------------------------------------------------------
+  // Funzione per submit cassetto
+  const handleSubmitSection = async (formData, close) => {
+    try {
+      const res = await axios.put(
+        "http://127.0.0.1:3000/sections/edit",
+        formData
+      );
+      if (res.status === 200) {
+        setAlertOk(true);
+        setTimeout(() => {
+          setAlertOk(null);
+          setModSectId(null);
         }, 3000);
         
       }
@@ -272,7 +313,7 @@ function Structure() {
               <Accordion
                 expanded={openSections}
                 onChange={() => setOpenSections(!openSections)}
-                onClick={handlesections}
+                onClick={handleSections}
               >
                 <AccordionSummary
                   expandIcon={<ArrowDownwardIcon />}
@@ -284,38 +325,38 @@ function Structure() {
                 <AccordionDetails>
                   <Typography component="div">
                     <FormSect></FormSect>
-                    {drawers.map((d) => (
+                    {sections.map((s) => (
                       <table>
                         <thead>
                           <tr>
-                            <td>ID Cassettiera</td>
-                            <td>Nome Cassettiera</td>
-                            <td>ID</td>
+                            <td>ID Cassetto</td>
                             <td>Nome Cassetto</td>
+                            <td>ID</td>
+                            <td>Nome Sezione</td>
                             <td>Azioni</td>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr key={d.id}>
-                            <td>{d.container_id}</td>
-                            <td>{d.container_name}</td>
-                            <td>{d.id}</td>
-                            <td>{d.drawer_name}</td>
+                          <tr key={s.id}>
+                            <td>{s.drawer_id}</td>
+                            <td>{s.drawer_name}</td>
+                            <td>{s.id}</td>
+                            <td>{s.section_name}</td>
                             <td>
                               <DeleteForeverOutlinedIcon
                                 className="delete"
-                                onClick={() => handleDeletDraw(d.id)}
+                                onClick={() => handleDeleteSection(s.id)}
                               ></DeleteForeverOutlinedIcon>
                               <ModeIcon
                                 className="modify"
-                                onClick={() => setModDrawId(d.id)}
+                                onClick={() => setModSectId(s.id)}
                               ></ModeIcon>
-                              {modDrawId === d.id ? (
+                              {modSectId === s.id ? (
                                 <FormModCont
-                                  id={d.id}
-                                  old={d.drawer_name}
-                                  close={() => setModDrawId(null)}
-                                  onSubmit={handleSubmitDrawer}
+                                  id={s.id}
+                                  old={s.section_name}
+                                  close={() => setModSectId(null)}
+                                  onSubmit={handleSubmitSection}
                                   alertOk={alertOk}
                                   setAlertOk={setAlertOk}
                                   alertNo={alertNo}

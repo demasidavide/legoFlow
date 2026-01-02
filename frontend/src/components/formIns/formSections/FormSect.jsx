@@ -51,7 +51,7 @@ function FormSect() {
           onChange={(e) => setName(e.target.value)}
         ></input>
         <select required value={idDraw} onChange={(e) => setIdDraw(e.target.value)}>
-          <option value="">Seleziona Cassettiera</option>
+          <option value="">Seleziona Cassetto</option>
           {drawers.map((d) => (
             <option key={d.id} value={d.id}>
               {d.id} {d.name}
