@@ -1,21 +1,13 @@
 import Navbar from "../components/navbar/Navbar";
 import Sidebar from "../components/sidebar/Sidebar";
-import FormCont from "../components/formIns/formContainer/FormCont";
-import FormDraw from "../components/formIns/formDrawers/FormDraw";
-import FormSect from "../components/formIns/formSections/FormSect";
-import FormModCont from "../components/formIns/FormModCont/FormModCont";
-import FormColors from "../components/formIns/formColors/FormColors";
-import FormModCol from "../components/formIns/formModCol/FormModCol";
+import FormInv from "../components/formInvent/FormInv";
+import Table from "../components/table/Table";
 import "./Insert.css";
 // icone
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import ModeIcon from "@mui/icons-material/Mode";
 //------
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -243,7 +235,9 @@ function Structure() {
         <div className="container-main">
           <div className="container-show">
             <div className="container-acc">
-              
+              <FormInv></FormInv>
+              <hr></hr>
+              <Table></Table>
             </div>
           </div>
         </div>
