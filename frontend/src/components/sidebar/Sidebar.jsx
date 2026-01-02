@@ -8,6 +8,7 @@ function Sidebar(){
             <ul>
                 <li className=''><Link to="/">INVENTARIO</Link></li>
                 <li className=''><Link to="/Structure">STRUTTURA</Link></li>
+                <li className=''><Link to="/Insert">INSERIMENTO</Link></li>
             </ul>
         </div>
         
