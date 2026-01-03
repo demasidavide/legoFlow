@@ -28,7 +28,7 @@ app.use('/colors',colorsRouter);
 
 
 //post per inserire dati in inventory
-app.post("/api/inventory/add", (req, res) => {
+app.post("/inventory/add", (req, res) => {
   const { part_id, color_id, section_id, quantity } = req.body;
 
   if (!part_id || !color_id || !section_id || quantity <= 0) {
