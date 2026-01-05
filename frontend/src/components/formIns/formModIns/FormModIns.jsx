@@ -1,10 +1,12 @@
-import "./FormInv.css";
+import "./FormModIns.css";
 import { useState,useEffect } from "react";
-
+import CloseIcon from "@mui/icons-material/Close";
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
 import axios from "axios";
 
 
-function FormInv() {
+function FormModIns({close,idOld}) {
   //salvataggio dati letti dalle tabelle
   const [containers, setContainers] = useState([]);
   const [drawers, setDrawers] = useState([]);
@@ -19,38 +21,9 @@ function FormInv() {
   const [selPartName,setSelPartName] = useState("");
   const [selPartQta,setSelPartQta] = useState("");
 
-  useEffect(()=>{
-    handleContainers();
-    handleDrawers();
-    handleSections();
-    handleColors();
-  },[])
-
-  // visualizzo la lista dei containers/cassettiere----------------------------------
-  const handleContainers = async () => {
-    const res = await axios.get("http://127.0.0.1:3000/containers/read");
-    setContainers(res.data);
-    
-  };
-  //---------------------------------------------------------------------------------
-  //visualizzo la lista dei drawers/cassetti-----------------------------------------
-  const handleDrawers = async () => {
-    const res = await axios.get("http://127.0.0.1:3000/drawers/read");
-    setDrawers(res.data);
-  };
-  //---------------------------------------------------------------------------------
-  //visualizzo la lista sezioni------------------------------------------------------
-  const handleSections = async () => {
-    const res = await axios.get("http://127.0.0.1:3000/sections/read");
-    setSections(res.data);
-  };
-  //---------------------------------------------------------------------------------
-  //visualizzo la lista colori-------------------------------------------------------
-  const handleColors = async () => {
-    const res = await axios.get("http://127.0.0.1:3000/colors/read");
-    setColors(res.data);
-  };
-  //---------------------------------------------------------------------------------
+  //gestione modifica-lettura dati vecchi
+  
+  
   //gestione inserimento pezzi-------------------------------------------------------
   const handleSubmit = async(e)=>{
     e.preventDefault();
@@ -71,8 +44,9 @@ try{
 
   return (
     <>
-      <form className="insert" onSubmit={handleSubmit}>
-        <h2 className="title">INSERISCI POSIZIONE</h2>
+      <form className="modifica-ins" onSubmit={handleSubmit}>
+        <CloseIcon className="close" onClick={close}></CloseIcon>
+        <h2 className="title">MODIFICA POSIZIONE</h2>
         <label>Cassettiera</label>
         <select onChange={(e)=>{setSelCont(e.target.value); handleContainers();}}>
             <option value="">Seleziona...</option>
@@ -119,4 +93,4 @@ try{
     </>
   );
 }
-export default FormInv;
+export default FormModIns;

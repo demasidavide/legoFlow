@@ -6,6 +6,7 @@ import FormSect from "../components/formIns/formSections/FormSect";
 import FormModCont from "../components/formIns/FormModCont/FormModCont";
 import FormColors from "../components/formIns/formColors/FormColors";
 import FormModCol from "../components/formIns/formModCol/FormModCol";
+import FormModIns from "../components/formIns/formModIns/FormModIns";
 import "./Structure.css";
 // icone
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
@@ -493,6 +494,7 @@ function Structure() {
                 </AccordionDetails>
               </Accordion>
             </div>
+            
           </div>
         </div>
       </div>

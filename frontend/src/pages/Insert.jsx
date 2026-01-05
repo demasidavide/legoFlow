@@ -11,7 +11,7 @@ import ModeIcon from "@mui/icons-material/Mode";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-function Structure() {
+function Insert() {
   //apertura e chiusura accordion
   const [openContainers, setOpenContainers] = useState(false);
   const [openDrawers, setOpenDrawers] = useState(false);
@@ -116,4 +116,4 @@ function Structure() {
   );
 }
 
-export default Structure;
+export default Insert;
