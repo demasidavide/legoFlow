@@ -9,9 +9,33 @@ router.get('/read',(req,res)=>{
   ).all();
   res.json(rowInv);
 })
+//read per modifica
+router.get('/read/mod',(req,res)=>{
+  const {id} = req.query;
+  const rowTot = db.prepare(`
+    SELECT 
+    inventory.part_id,
+    parts.name AS part_name,
+    inventory.color_id,
+    colors.name AS color_name,
+    inventory.quantity,
+    inventory.section_id,
+    sections.name AS section_name,
+    drawers.name AS drawer_name,
+    containers.name AS container_name
+FROM inventory
+INNER JOIN parts ON inventory.part_id = parts.id
+INNER JOIN colors ON inventory.color_id = colors.id
+INNER JOIN sections ON inventory.section_id = sections.id
+INNER JOIN drawers ON sections.drawer_id = drawers.id
+INNER JOIN containers ON drawers.container_id = containers.id
+WHERE inventory.part_id = ?;`).all(id);
+res.json(rowTot);
+})
 
 //read per tabella inserimento
 router.get('/read/ins',(req,res)=>{
+  
   const rowTot = db.prepare(`
     SELECT 
     inventory.part_id,

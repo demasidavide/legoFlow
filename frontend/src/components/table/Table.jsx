@@ -10,9 +10,12 @@ function Table() {
   const [inventory, setInventory] = useState([]);
   const [idMod,setIdMod] = useState(null);
 
+
+
   useEffect(() => {
     handleInventory();
   }, []);
+  
   const handleInventory = async () => {
     const res = await axios.get("http://127.0.0.1:3000/inventory/read/ins");
     setInventory(res.data);
