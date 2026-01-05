@@ -17,6 +17,24 @@
   }
   > select{
     margin-right:10px;
+    margin-top: 3px;
     margin-left:10px;
   }
+  >input[type="number"]{
+    width: 80px;
+    height: 43px;
+    font-weight: bold;
+    border-radius: 10px;
+    text-align: center;
+    margin-right:10px;
+  background-color: var(--neutral);
+  border:solid 2px var(--header);
+  color:var(--header)
+  }
+  >input[type="number"]::-webkit-inner-spin-button {
+  border-radius: 5px;
+  height: 30px; 
+  width: 20px; 
+  cursor: pointer;
+}
 }

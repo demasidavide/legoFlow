@@ -26,7 +26,9 @@ app.use('/parts',partsRouter);
 const colorsRouter = require('./routes/colors.js');
 app.use('/colors',colorsRouter);
 
-
+//importo get e post da inventory.js
+const inventoryRouter = require('./routes/inventory.js');
+app.use('/inventory', inventoryRouter);
 //post per inserire dati in inventory
 app.post("/inventory/add", (req, res) => {
   const { part_id, color_id, section_id, quantity } = req.body;

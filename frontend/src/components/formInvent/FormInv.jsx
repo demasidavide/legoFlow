@@ -1,6 +1,8 @@
 import "./FormInv.css";
 import { useState,useEffect } from "react";
+
 import axios from "axios";
+
 
 function FormInv() {
   //salvataggio dati letti dalle tabelle
@@ -13,6 +15,9 @@ function FormInv() {
   const [selDraw,setSelDraw] = useState("");
   const [selSect,setSelSect] = useState("");
   const [selCol,setSelCol] = useState("");
+  const [selPartId,setSelPartId] = useState("");
+  const [selPartName,setSelPartName] = useState("");
+  const [selPartQta,setSelPartQta] = useState("");
 
   useEffect(()=>{
     handleContainers();
@@ -50,7 +55,13 @@ function FormInv() {
   const handleSubmit = async(e)=>{
     e.preventDefault();
 try{
-    await axios.post("http://127.0.0.1:3000/inventory/add");
+    await axios.post("http://127.0.0.1:3000/inventory/transaction",{
+      parts_id:selPartId,
+      parts_name:selPartName,
+      color_id:selCol,
+      section_id:selSect,
+      quantity:selPartQta
+    });
 }catch(error){
 
 }
@@ -89,8 +100,9 @@ try{
           ))}
         </select>
         <h2 className="title">INSERISCI PEZZO</h2>
-        <input type="text" placeholder="Inserisci ID"></input>
-        <input type="text" placeholder="Inserisci nome"></input>
+        <input type="text" placeholder="Inserisci ID" onChange={(e)=>{setSelPartId(e.target.value)}}></input>
+        <input type="text" placeholder="Inserisci nome" onChange={(e)=>{setSelPartName(e.target.value)}}></input><br></br>
+        <input type="number" placeholder="Quantità" min={0} onChange={(e)=>{setSelPartQta(e.target.value)}}></input>
         <label>Colore</label>
         <select onChange={(e)=>{setSelCol(e.target.value); handleColors();}}>
             <option value="">Seleziona...</option>

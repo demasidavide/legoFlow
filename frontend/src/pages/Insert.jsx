@@ -69,73 +69,7 @@ function Structure() {
     setColors(res.data);
   };
   //---------------------------------------------------------------------------------
-  //geastione cancellazione containers(errore se associato a drawer,ok se non associato)
-  const handleDeleteCont = async (id) => {
-    try {
-      const res = await axios.delete(
-        "http://127.0.0.1:3000/containers/delete",
-        { data: { id: id } }
-      );
-      if (res.status === 200) {
-        alert(res.data.message || "Cancellazione avvenuta con successo!");
-        handleContainers();
-      }
-    } catch (error) {
-      if (error.status === 500 || 400)
-        alert(
-          "Impossibile cancellare! Un Cassetto è associato a questa cassettiera"
-        );
-    }
-  };
-  //----------------------------------------------------------------------------------
-  //gestione cancellazione cassetto,drawer--------------------------------------------
-  const handleDeletDraw = async (id) => {
-    try {
-      const res = await axios.delete("http://127.0.0.1:3000/drawers/delete", {
-        data: { id: id },
-      });
-      if (res.status === 200) {
-        alert(res.data.message || "Cancellazione avvenuta con successo!");
-        handleDrawers();
-      }
-    } catch (error) {
-      if (error.status === 500 || 400 || 403)
-        alert("Errore-Impossibile cancellare! ");
-    }
-  };
-  //-------------------------------------------------------------------------------------
-  //gestione cancellazione sezioni-------------------------------------------------------
-  const handleDeleteSection = async (id) => {
-    try {
-      const res = await axios.delete("http://127.0.0.1:3000/sections/delete", {
-        data: { id: id },
-      });
-      if (res.status === 200) {
-        alert(res.data.message || "Cancellazione avvenuta con successo!");
-        handleSections();
-      }
-    } catch (error) {
-      if (error.status === 500 || 400 || 403)
-        alert("Errore-Impossibile cancellare ");
-    }
-  };
-  //-------------------------------------------------------------------------------------
-  //gestione cancellazione colori--------------------------------------------------------
-  const handleDeleteColor = async (id) => {
-    try {
-      const res = await axios.delete("http://127.0.0.1:3000/colors/delete", {
-        data: { id: id },
-      });
-      if (res.status === 200) {
-        alert(res.data.message || "Cancellazione avvenuta con successo!");
-        handleColors();
-      }
-    } catch (error) {
-      if (error.status === 500 || 400 || 403)
-        alert("Errore-Impossibile cancellare ");
-    }
-  };
-  //-------------------------------------------------------------------------------------
+ 
   //gestione modifica nome container-----------------------------------------------------
   const handleSubmitContainer = async (formData, close) => {
     try {
@@ -158,73 +92,9 @@ function Structure() {
     }
   };
   //-------------------------------------------------------------------------------------
-  //gestione per modifica cassetto-------------------------------------------------------
   
-  const handleSubmitDrawer = async (formData, close) => {
-    try {
-      const res = await axios.put(
-        "http://127.0.0.1:3000/drawers/edit",
-        formData
-      );
-      if (res.status === 200) {
-        setAlertOk(true);
-        setTimeout(() => {
-          setAlertOk(null);
-          setModDrawId(null);
-        }, 3000);
-      }
-    } catch (error) {
-      setAlertNo(true);
-      setTimeout(() => {
-        setAlertNo(null);
-      }, 3000);
-    }
-  };
-  //-------------------------------------------------------------------------------------
-  // Funzione per modifica sezione
-  const handleSubmitSection = async (formData, close) => {
-    try {
-      const res = await axios.put(
-        "http://127.0.0.1:3000/sections/edit",
-        formData
-      );
-      if (res.status === 200) {
-        setAlertOk(true);
-        setTimeout(() => {
-          setAlertOk(null);
-          setModSectId(null);
-        }, 3000);
-      }
-    } catch (error) {
-      setAlertNo(true);
-      setTimeout(() => {
-        setAlertNo(null);
-      }, 3000);
-    }
-  };
-  //-------------------------------------------------------------------------------------
-  // Funzione per modifica colore
-  const handleSubmitColors = async (formData, close) => {
-    try {
-      const res = await axios.put(
-        "http://127.0.0.1:3000/colors/edit",
-        formData
-      );
-      if (res.status === 200) {
-        setAlertOk(true);
-        setTimeout(() => {
-          setAlertOk(null);
-          setModColId(null);
-        }, 3000);
-      }
-    } catch (error) {
-      setAlertNo(true);
-      setTimeout(() => {
-        setAlertNo(null);
-      }, 3000);
-    }
-  };
-  //-------------------------------------------------------------------------------------
+  
+  
   return (
     <>
       <Navbar></Navbar>
