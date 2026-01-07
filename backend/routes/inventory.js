@@ -9,7 +9,7 @@ router.get('/read',(req,res)=>{
   ).all();
   res.json(rowInv);
 })
-//read per modifica
+//read per modifica con dati in base a id selezionato
 router.get('/read/mod',(req,res)=>{
   const {id} = req.query;
   const rowTot = db.prepare(`
@@ -55,6 +55,30 @@ INNER JOIN drawers ON sections.drawer_id = drawers.id
 INNER JOIN containers ON drawers.container_id = containers.id;`).all();
 res.json(rowTot);
 })
+
+// transazione per modifica pezzo e inventory
+router.put('/transaction/mod', (req, res) => {
+  const { parts_id, new_parts_id, parts_name, color_id, section_id, quantity } = req.body; 
+
+  const transaction = db.transaction(() => {
+    
+    const updateInventory = db.prepare(
+      "UPDATE inventory SET part_id = ?, color_id = ?, section_id = ?, quantity = ? WHERE part_id = ?"
+    );
+    updateInventory.run(new_parts_id, color_id, section_id, quantity, parts_id);
+    
+    const updatePart = db.prepare("UPDATE parts SET id = ?, name = ? WHERE id = ?");
+    updatePart.run(new_parts_id, parts_name, parts_id);
+  });
+  
+  try {
+    transaction();
+    res.json({ success: true, message: "Modifica avvenuta con successo" });
+  } catch (error) {
+    console.log("Errore transazione modifica:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 //transazione con inserimento pezzo e poi inventory
 router.post('/transaction',(req,res)=>{

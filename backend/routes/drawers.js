@@ -17,6 +17,14 @@ router.get('/read/name',(req,res)=>{
         `).all();
         res.json(nameContainers);
 })
+//get per leggere nome in base a un id container selezionato (FormModIns.jsx)
+router.get('/read/mod',(req,res)=>{
+    const { id } = req.query;
+    const rows = db.prepare(`
+        SELECT * FROM DRAWERS 
+        WHERE container_id = ?`).all(id);
+        res.json(rows);
+})
 
 //post per inserire un drawers
 router.post('/add',(req,res)=>{

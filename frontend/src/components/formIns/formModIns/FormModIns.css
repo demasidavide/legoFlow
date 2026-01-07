@@ -30,6 +30,12 @@
     border: solid 2px var(--warning);
   }
 }
+.modifica-ins input[type="text"]{
+    border: none;
+    width: fit-content;
+    text-align: center;
+
+} 
 input[type="number"]{
     width: 80px;
     height: 44px;
@@ -46,4 +52,7 @@ input[type="number"]{
   height: 30px; 
   width: 20px; 
   cursor: pointer;
+}
+.label-old{
+  color: var(--warning);
 }

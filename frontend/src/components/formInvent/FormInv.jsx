@@ -21,10 +21,10 @@ function FormInv() {
 
   useEffect(()=>{
     handleContainers();
-    handleDrawers();
-    handleSections();
+    handleDrawers(selCont);
+    handleSections(selDraw);
     handleColors();
-  },[])
+  },[selCont,selDraw,selSect])
 
   // visualizzo la lista dei containers/cassettiere----------------------------------
   const handleContainers = async () => {
@@ -34,14 +34,14 @@ function FormInv() {
   };
   //---------------------------------------------------------------------------------
   //visualizzo la lista dei drawers/cassetti-----------------------------------------
-  const handleDrawers = async () => {
-    const res = await axios.get("http://127.0.0.1:3000/drawers/read");
+  const handleDrawers = async (id) => {
+    const res = await axios.get("http://127.0.0.1:3000/drawers/read/mod",{params:{id}});
     setDrawers(res.data);
   };
   //---------------------------------------------------------------------------------
   //visualizzo la lista sezioni------------------------------------------------------
-  const handleSections = async () => {
-    const res = await axios.get("http://127.0.0.1:3000/sections/read");
+  const handleSections = async (id) => {
+    const res = await axios.get("http://127.0.0.1:3000/sections/read/mod",{params:{id}});
     setSections(res.data);
   };
   //---------------------------------------------------------------------------------
@@ -74,7 +74,7 @@ try{
       <form className="insert" onSubmit={handleSubmit}>
         <h2 className="title">INSERISCI POSIZIONE</h2>
         <label>Cassettiera</label>
-        <select onChange={(e)=>{setSelCont(e.target.value); handleContainers();}}>
+        <select onChange={(e)=>{setSelCont(e.target.value);}}>
             <option value="">Seleziona...</option>
           {containers.map((c) => (
             <option key={c.id} value={c.id}>
@@ -83,7 +83,7 @@ try{
           ))}
         </select>
         <label>Cassetto</label>
-        <select onChange={(e)=>{setSelDraw(e.target.value); handleDrawers();}}>
+        <select onChange={(e)=>{setSelDraw(e.target.value);}}>
             <option value="">Seleziona...</option>
           {drawers.map((d) => (
             <option key={d.id} value={d.id}>

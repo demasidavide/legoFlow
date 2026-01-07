@@ -16,6 +16,14 @@ router.get('/read/name',(req,res)=>{
         `).all();
         res.json(nameDrawers);
 })
+//get per leggere nome in base a un id drawer selezionato (FormModIns.jsx)
+router.get('/read/mod',(req,res)=>{
+    const { id } = req.query;
+    const rows = db.prepare(`
+        SELECT * FROM sections 
+        WHERE drawer_id = ?`).all(id);
+        res.json(rows);
+});
 
 //post per aggiungere una section ad un drawer
 router.post('/add',(req,res)=>{
