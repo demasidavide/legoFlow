@@ -9,7 +9,7 @@ router.get('/read',(req,res)=>{
   ).all();
   res.json(rowInv);
 })
-//read per modifica con dati in base a id selezionato
+//read per leggere tutti i dati da modificare in base a id parts selezionato
 router.get('/read/mod',(req,res)=>{
   const {id} = req.query;
   const rowTot = db.prepare(`
@@ -105,6 +105,28 @@ router.post('/transaction',(req,res)=>{
     res.json({ success: true });
   } catch (error) {
     console.log("Errore transazione:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+//transazione per cancellazione record inventory e parts
+
+router.delete('/transaction/del', (req, res) => {
+  const { id } = req.query;  // id del pezzo
+
+  const transaction = db.transaction(() => {
+    // Cancella da inventory
+    const deleteInventory = db.prepare("DELETE FROM inventory WHERE part_id = ?");
+    deleteInventory.run(id);
+    
+    // Cancella da parts
+    const deletePart = db.prepare("DELETE FROM parts WHERE id = ?");
+    deletePart.run(id);
+  });
+  try {
+    transaction();
+    res.json({ success: true, message: "Cancellazione avvenuta con successo" });
+  } catch (error) {
+    console.log("Errore cancellazione:", error);
     res.status(500).json({ error: error.message });
   }
 });

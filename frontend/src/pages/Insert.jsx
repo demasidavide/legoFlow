@@ -70,30 +70,7 @@ function Insert() {
   };
   //---------------------------------------------------------------------------------
  
-  //gestione modifica nome container-----------------------------------------------------
-  const handleSubmitContainer = async (formData, close) => {
-    try {
-      const res = await axios.put(
-        "http://127.0.0.1:3000/containers/edit",
-        formData
-      );
-      if (res.status === 200) {
-        setAlertOk(true);
-        setTimeout(() => {
-          setAlertOk(null);
-          setModContId(null);
-        }, 3000);
-      }
-    } catch (error) {
-      setAlertNo(true);
-      setTimeout(() => {
-        setAlertNo(null);
-      }, 3000);
-    }
-  };
-  //-------------------------------------------------------------------------------------
-  
-  
+ 
   
   return (
     <>

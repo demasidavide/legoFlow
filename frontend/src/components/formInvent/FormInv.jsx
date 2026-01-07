@@ -1,8 +1,8 @@
 import "./FormInv.css";
-import { useState,useEffect } from "react";
-
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
+import { useState, useEffect } from "react";
 import axios from "axios";
-
 
 function FormInv() {
   //salvataggio dati letti dalle tabelle
@@ -10,38 +10,43 @@ function FormInv() {
   const [drawers, setDrawers] = useState([]);
   const [sections, setSections] = useState([]);
   const [colors, setColors] = useState([]);
+  const [messageOk, setMessageOk] = useState(false);
+  const [messageNo, setMessageNo] = useState(false);
   //valori selezionati
-  const [selCont,setSelCont] = useState("");
-  const [selDraw,setSelDraw] = useState("");
-  const [selSect,setSelSect] = useState("");
-  const [selCol,setSelCol] = useState("");
-  const [selPartId,setSelPartId] = useState("");
-  const [selPartName,setSelPartName] = useState("");
-  const [selPartQta,setSelPartQta] = useState("");
+  const [selCont, setSelCont] = useState("");
+  const [selDraw, setSelDraw] = useState("");
+  const [selSect, setSelSect] = useState("");
+  const [selCol, setSelCol] = useState("");
+  const [selPartId, setSelPartId] = useState("");
+  const [selPartName, setSelPartName] = useState("");
+  const [selPartQta, setSelPartQta] = useState("");
 
-  useEffect(()=>{
+  useEffect(() => {
     handleContainers();
     handleDrawers(selCont);
     handleSections(selDraw);
     handleColors();
-  },[selCont,selDraw,selSect])
+  }, [selCont, selDraw, selSect]);
 
   // visualizzo la lista dei containers/cassettiere----------------------------------
   const handleContainers = async () => {
     const res = await axios.get("http://127.0.0.1:3000/containers/read");
     setContainers(res.data);
-    
   };
   //---------------------------------------------------------------------------------
   //visualizzo la lista dei drawers/cassetti-----------------------------------------
   const handleDrawers = async (id) => {
-    const res = await axios.get("http://127.0.0.1:3000/drawers/read/mod",{params:{id}});
+    const res = await axios.get("http://127.0.0.1:3000/drawers/read/mod", {
+      params: { id },
+    });
     setDrawers(res.data);
   };
   //---------------------------------------------------------------------------------
   //visualizzo la lista sezioni------------------------------------------------------
   const handleSections = async (id) => {
-    const res = await axios.get("http://127.0.0.1:3000/sections/read/mod",{params:{id}});
+    const res = await axios.get("http://127.0.0.1:3000/sections/read/mod", {
+      params: { id },
+    });
     setSections(res.data);
   };
   //---------------------------------------------------------------------------------
@@ -52,70 +57,131 @@ function FormInv() {
   };
   //---------------------------------------------------------------------------------
   //gestione inserimento pezzi-------------------------------------------------------
-  const handleSubmit = async(e)=>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
-try{
-    await axios.post("http://127.0.0.1:3000/inventory/transaction",{
-      parts_id:selPartId,
-      parts_name:selPartName,
-      color_id:selCol,
-      section_id:selSect,
-      quantity:selPartQta
-    });
-    navigate('/Insert');
-}catch(error){
-
-}
-
-  }
+    try {
+      const res = await axios.post(
+        "http://127.0.0.1:3000/inventory/transaction",
+        {
+          parts_id: selPartId,
+          parts_name: selPartName,
+          color_id: selCol,
+          section_id: selSect,
+          quantity: selPartQta,
+        }
+      );
+      if (res.status === 200) {
+        setMessageOk(true); 
+        setTimeout(() => {
+          setMessageOk(false); 
+          window.location.reload(); 
+        }, 3000);
+      }
+      window.location.reload();
+    } catch (error) {}
+  };
 
   return (
     <>
       <form className="insert" onSubmit={handleSubmit}>
         <h2 className="title">INSERISCI POSIZIONE</h2>
         <label>Cassettiera</label>
-        <select onChange={(e)=>{setSelCont(e.target.value);}}>
-            <option value="">Seleziona...</option>
+        <select
+          onChange={(e) => {
+            setSelCont(e.target.value);
+          }}
+        >
+          <option value="">Seleziona...</option>
           {containers.map((c) => (
             <option key={c.id} value={c.id}>
-             {c.name}
+              {c.name}
             </option>
           ))}
         </select>
         <label>Cassetto</label>
-        <select onChange={(e)=>{setSelDraw(e.target.value);}}>
-            <option value="">Seleziona...</option>
+        <select
+          onChange={(e) => {
+            setSelDraw(e.target.value);
+          }}
+        >
+          <option value="">Seleziona...</option>
           {drawers.map((d) => (
             <option key={d.id} value={d.id}>
-             {d.name}
+              {d.name}
             </option>
           ))}
         </select>
         <label>Sezione</label>
-        <select onChange={(e)=>{setSelSect(e.target.value); handleSections();}}>
-            <option value="">Seleziona...</option>
+        <select
+          onChange={(e) => {
+            setSelSect(e.target.value);
+            handleSections();
+          }}
+        >
+          <option value="">Seleziona...</option>
           {sections.map((s) => (
             <option key={s.id} value={s.id}>
-             {s.name}
+              {s.name}
             </option>
           ))}
         </select>
         <h2 className="title">INSERISCI PEZZO</h2>
-        <input type="text" placeholder="Inserisci ID" onChange={(e)=>{setSelPartId(e.target.value)}}></input>
-        <input type="text" placeholder="Inserisci nome" onChange={(e)=>{setSelPartName(e.target.value)}}></input><br></br>
-        <input type="number" placeholder="Quantità" min={0} onChange={(e)=>{setSelPartQta(e.target.value)}}></input>
+        <input
+          type="text"
+          placeholder="Inserisci ID"
+          onChange={(e) => {
+            setSelPartId(e.target.value);
+          }}
+        ></input>
+        <input
+          type="text"
+          placeholder="Inserisci nome"
+          onChange={(e) => {
+            setSelPartName(e.target.value);
+          }}
+        ></input>
+        <br></br>
+        <input
+          type="number"
+          placeholder="Quantità"
+          min={0}
+          onChange={(e) => {
+            setSelPartQta(e.target.value);
+          }}
+        ></input>
         <label>Colore</label>
-        <select onChange={(e)=>{setSelCol(e.target.value); handleColors();}}>
-            <option value="">Seleziona...</option>
+        <select
+          onChange={(e) => {
+            setSelCol(e.target.value);
+            handleColors();
+          }}
+        >
+          <option value="">Seleziona...</option>
           {colors.map((cl) => (
             <option key={cl.id} value={cl.id}>
-             {cl.id} {cl.name}
+              {cl.id} {cl.name}
             </option>
           ))}
         </select>
         <br></br>
         <button type="submit">Inserisci</button>
       </form>
+      <Stack sx={{ width: "100%" }} spacing={2}>
+        {messageOk ? (
+          <Alert variant="filled" severity="success">
+            This is a filled success Alert.
+          </Alert>
+        ) : (
+          ""
+        )}
+        {messageNo ? (
+          <Alert variant="filled" severity="error">
+            This is a filled error Alert.
+          </Alert>
+        ) : (
+          ""
+        )}
+      </Stack>
     </>
   );
 }
