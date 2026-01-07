@@ -1,6 +1,6 @@
 import "./FormModIns.css";
 import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
@@ -41,6 +41,39 @@ function FormModIns({ close, idOld }) {
   const [selectedPartQta, setSelectedPartQta] = useState("");
   const [selectedColName, setSelectedColName] = useState("");
 
+  
+  //useEffect per caricare i dati selezionati dall utente da modificare--------------
+  useEffect(() => {
+    if (rowOld.length > 0) {
+      const data = rowOld[0];
+      setSelPartId(data.part_id);
+      setSelPartName(data.part_name);
+      setSelCol(data.color_id);
+      setSelPartQta(data.quantity);
+      setSelSect(data.section_id);
+      setSelSectName(data.section_name);
+      setSelCont(data.container_name);
+      setSelDraw(data.drawer_name);
+      setSelPartQta(data.quantity);
+      setSelColName(data.color_name);
+      //inizializzo anche i selected nel caso non si modificassero valori durante la modifica
+      setSelectedPartId(data.part_id);
+      setSelectedPartName(data.part_name);
+      setSelectedCol(data.color_id);
+      setSelectedPartQta(data.quantity);
+      setSelectedSect(data.section_id);
+      setSelectedCont(data.container_name);
+      setSelectedDraw(data.drawer_name);
+      setSelectedCol(data.color_id);
+    }
+  }, [rowOld]);
+
+  useEffect(() => {
+    if (idOld) {
+      handleReadOld();
+    }
+  }, [idOld]);
+  //---------------------------------------------------------------------------------
   useEffect(() => {
     handleContainers();
     handleDrawers();
@@ -86,29 +119,6 @@ function FormModIns({ close, idOld }) {
   };
   //---------------------------------------------------------------------------------
 
-  //useEffect per caricare i dati selezionati dall utente da modificare--------------
-  useEffect(() => {
-    if (rowOld.length > 0) {
-      const data = rowOld[0];
-      setSelPartId(data.part_id);
-      setSelPartName(data.part_name);
-      setSelCol(data.color_id);
-      setSelPartQta(data.quantity);
-      setSelSect(data.section_id);
-      setSelSectName(data.section_name);
-      setSelCont(data.container_name);
-      setSelDraw(data.drawer_name);
-      setSelPartQta(data.quantity);
-      setSelColName(data.color_name);
-    }
-  }, [rowOld]);
-
-  useEffect(() => {
-    if (idOld) {
-      handleReadOld();
-    }
-  }, [idOld]);
-  //---------------------------------------------------------------------------------
   //gestione modifica-lettura dati vecchi--------------------------------------------
   const handleReadOld = async () => {
     try {
@@ -123,19 +133,30 @@ function FormModIns({ close, idOld }) {
   //-----------------------------------------------------------------------------------
   //gestione inserimento pezzi-------------------------------------------------------
   const handleSubmit = async (e) => {
-    console.log("handle partito...")
+    console.log("handle partito...");
     e.preventDefault();
     try {
       console.log("Invio richiesta PUT...");
-      await axios.put("http://127.0.0.1:3000/inventory/transaction/mod", {
+      console.log("Valori inviati:", {
         parts_id: selectedPartId,
         new_parts_id: selectedPartId,
         parts_name: selectedPartName,
         color_id: selectedCol,
         section_id: selectedSect,
         quantity: selectedPartQta,
-    });
-      console.log("Richiesta riuscita:");
+      });
+      const res = await axios.put(
+        "http://127.0.0.1:3000/inventory/transaction/mod",
+        {
+          parts_id: selectedPartId,
+          new_parts_id: selectedPartId,
+          parts_name: selectedPartName,
+          color_id: selectedCol,
+          section_id: selectedSect,
+          quantity: selectedPartQta,
+        }
+      );
+      console.log("Richiesta riuscita:", res.status);
       navigate("/Insert");
     } catch (error) {
       console.log("Errore nella richiesta:", error);
@@ -237,10 +258,9 @@ function FormModIns({ close, idOld }) {
             id="outlined-basic"
             type="text"
             label="Id Pezzo"
-            value={selPartId}
+            value={selectedPartId}
             variant="outlined"
             required
-            
             sx={{
               "& .MuiInputLabel-root.Mui-focused": {
                 transform: "translate(14px, -29px) scale(0.75)",
@@ -261,7 +281,7 @@ function FormModIns({ close, idOld }) {
             id="outlined-basic"
             type="text"
             label="Nome"
-            value={selPartName}
+            value={selectedPartName}
             variant="outlined"
             required
             shrink={true}

@@ -59,6 +59,7 @@ res.json(rowTot);
 // transazione per modifica pezzo e inventory
 router.put('/transaction/mod', (req, res) => {
   const { parts_id, new_parts_id, parts_name, color_id, section_id, quantity } = req.body; 
+  console.log("Valori ricevuti:", { parts_id, new_parts_id, parts_name, color_id, section_id, quantity });
 
   const transaction = db.transaction(() => {
     
@@ -66,13 +67,15 @@ router.put('/transaction/mod', (req, res) => {
       "UPDATE inventory SET part_id = ?, color_id = ?, section_id = ?, quantity = ? WHERE part_id = ?"
     );
     updateInventory.run(new_parts_id, color_id, section_id, quantity, parts_id);
-    
+    console.log("Righe aggiornate in inventory:", resultInv.changes);
     const updatePart = db.prepare("UPDATE parts SET id = ?, name = ? WHERE id = ?");
     updatePart.run(new_parts_id, parts_name, parts_id);
+    console.log("Righe aggiornate in parts:", resultPart.changes);
   });
   
   try {
     transaction();
+    console.log("transazione ok")
     res.json({ success: true, message: "Modifica avvenuta con successo" });
   } catch (error) {
     console.log("Errore transazione modifica:", error);
