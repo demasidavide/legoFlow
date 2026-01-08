@@ -72,3 +72,6 @@ tbody tr td {
   border: solid 2px var(--header);
   }
 }
+.css-1f1pi2l-MuiButtonBase-root-MuiAccordionSummary-root:hover {
+  border:none;
+}
