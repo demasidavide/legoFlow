@@ -1,7 +1,7 @@
 @import "../../variables-css/variables.css";
 
 .insert{
-    margin-left: 20%;
+    margin-left: 15%;
     border: solid 4px var(--secondary);
   width: fit-content;
   padding: 20px;
