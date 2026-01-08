@@ -122,7 +122,7 @@ function FormInv() {
         <select
           onChange={(e) => {
             setSelSect(e.target.value);
-            handleSections();
+            
           }}
         >
           <option value="">Seleziona...</option>
