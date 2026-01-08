@@ -10,6 +10,9 @@ function FormSect() {
   const [idDraw, setIdDraw] = useState("");
 
   useEffect(() => {
+    handleDrawers();
+  }, []);
+
     const handleDrawers = async () => {
       try {
         const res = await axios.get("http://127.0.0.1:3000/drawers/read");
@@ -18,9 +21,7 @@ function FormSect() {
         console.log(error, "errore ricerca containers-formdrawer");
       }
     };
-    handleDrawers();
-  }, []);
-
+    
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -50,7 +51,7 @@ function FormSect() {
           value={name}
           onChange={(e) => setName(e.target.value)}
         ></input>
-        <select required value={idDraw} onChange={(e) => setIdDraw(e.target.value)}>
+        <select required value={idDraw} onFocus={handleDrawers} onChange={(e) => setIdDraw(e.target.value)}>
           <option value="">Seleziona Cassetto</option>
           {drawers.map((d) => (
             <option key={d.id} value={d.id}>

@@ -9,6 +9,9 @@ select{
     padding: 8px;
     border-radius: 10px; 
     border:solid 2px var(--header);
+    &:hover{
+      cursor: pointer;
+    }
     
 }
 option{

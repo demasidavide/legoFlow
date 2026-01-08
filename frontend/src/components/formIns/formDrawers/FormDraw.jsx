@@ -10,6 +10,9 @@ function FormDraw() {
   const [classMessage, setClassMessage] = useState("");
 
   useEffect(() => {
+handleContainer();
+  }, []);
+  
     const handleContainer = async () => {
       try {
         const res = await axios.get("http://127.0.0.1:3000/containers/read");
@@ -19,8 +22,7 @@ function FormDraw() {
         console.log(error, "errore ricerca containers-formdrawer");
       }
     };
-    handleContainer();
-  }, []);
+    
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,7 +53,7 @@ function FormDraw() {
           value={name}
           onChange={(e) => setName(e.target.value)}
         ></input>
-        <select required value={idCont} onChange={(e) => setIdCont(e.target.value)}>
+        <select required value={idCont} onFocus={handleContainer} onChange={(e) => setIdCont(e.target.value)}>
           <option value="">Seleziona Cassettiera</option>
           {container.map((c) => (
             <option key={c.id} value={c.id}>

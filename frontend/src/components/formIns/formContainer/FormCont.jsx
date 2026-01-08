@@ -2,7 +2,7 @@ import "./FormCont.css";
 import axios from "axios";
 import { useState } from "react";
 
-function FormCont() {
+function FormCont({onSuccess}) {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [classMessage, setClassMessage] = useState("");
@@ -15,6 +15,7 @@ function FormCont() {
       setName("");
       setMessage(`Cassettiera ${name} inserito con successo`);
       setTimeout(() => {setMessage("");setClassMessage("");}, 5000);
+      onSuccess();
       
     } catch (error) {
       console.log(error);

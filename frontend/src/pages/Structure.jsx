@@ -168,7 +168,6 @@ function Structure() {
   };
   //-------------------------------------------------------------------------------------
   //gestione per modifica cassetto-------------------------------------------------------
-  
   const handleSubmitDrawer = async (formData, close) => {
     try {
       const res = await axios.put(
@@ -260,7 +259,7 @@ function Structure() {
                 </AccordionSummary>
                 <AccordionDetails>
                   <Typography component="div">
-                    <FormCont></FormCont>
+                    <FormCont onSuccess={handleContainers}></FormCont>
                     {containers.map((c) => (
                       <table>
                         <thead>
