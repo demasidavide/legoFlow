@@ -138,7 +138,7 @@ function FormModIns({ close, idOld }) {
     try {
       console.log("Invio richiesta PUT...");
       console.log("Valori inviati:", {
-        parts_id: selectedPartId,
+        parts_id: selPartId,
         new_parts_id: selectedPartId,
         parts_name: selectedPartName,
         color_id: selectedCol,
@@ -148,7 +148,7 @@ function FormModIns({ close, idOld }) {
       const res = await axios.put(
         "http://127.0.0.1:3000/inventory/transaction/mod",
         {
-          parts_id: selectedPartId,
+          parts_id: selPartId,
           new_parts_id: selectedPartId,
           parts_name: selectedPartName,
           color_id: selectedCol,

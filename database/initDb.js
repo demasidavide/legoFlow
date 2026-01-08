@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS inventory (
     section_id INTEGER NOT NULL,
     quantity INTEGER NOT NULL CHECK (quantity >= 0),
     UNIQUE (part_id, color_id, section_id),
-    FOREIGN KEY (part_id) REFERENCES parts(id),
+    FOREIGN KEY (part_id) REFERENCES parts(id) ON UPDATE CASCADE,
     FOREIGN KEY (color_id) REFERENCES colors(id),
     FOREIGN KEY (section_id) REFERENCES sections(id)
 );

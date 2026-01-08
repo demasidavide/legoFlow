@@ -57,31 +57,78 @@ res.json(rowTot);
 })
 
 // transazione per modifica pezzo e inventory
+
 router.put('/transaction/mod', (req, res) => {
   const { parts_id, new_parts_id, parts_name, color_id, section_id, quantity } = req.body; 
   console.log("Valori ricevuti:", { parts_id, new_parts_id, parts_name, color_id, section_id, quantity });
 
+  // Controllo se new_parts_id esiste già (se sì, rifiuta)
+  const exists = db.prepare("SELECT id FROM parts WHERE id = ?").get(new_parts_id);
+  if (exists && new_parts_id !== parts_id) {
+    return res.status(400).json({ error: `new_parts_id ${new_parts_id} already exists` });
+  }
+
   const transaction = db.transaction(() => {
-    
+    if (new_parts_id === parts_id) {
+      // Caso semplice: stesso ID, aggiorna solo nome e campi inventory
+      const updatePart = db.prepare("UPDATE parts SET name = ? WHERE id = ?");
+      updatePart.run(parts_name, parts_id);
+      
+      const updateInventory = db.prepare(
+        "UPDATE inventory SET color_id = ?, section_id = ?, quantity = ? WHERE part_id = ?"
+      );
+      updateInventory.run(color_id, section_id, quantity, parts_id);
+      console.log("Aggiornamento per stesso ID completato");
+      return;
+    }
+
+    // Caso cambio ID: aggiorna parts prima
+    const updatePart = db.prepare("UPDATE parts SET id = ?, name = ? WHERE id = ?");
+    updatePart.run(new_parts_id, parts_name, parts_id);
+    console.log("Parts aggiornato al nuovo ID");
+
+    // Ora inventory può puntare al nuovo ID senza FK violation
     const updateInventory = db.prepare(
       "UPDATE inventory SET part_id = ?, color_id = ?, section_id = ?, quantity = ? WHERE part_id = ?"
     );
-    updateInventory.run(new_parts_id, color_id, section_id, quantity, parts_id);
-    console.log("Righe aggiornate in inventory:", resultInv.changes);
-    const updatePart = db.prepare("UPDATE parts SET id = ?, name = ? WHERE id = ?");
-    updatePart.run(new_parts_id, parts_name, parts_id);
-    console.log("Righe aggiornate in parts:", resultPart.changes);
+    updateInventory.run(new_parts_id, color_id, section_id, quantity, parts_id);  // Nota: WHERE usa ancora parts_id originale
+    console.log("Inventory aggiornato");
   });
   
   try {
     transaction();
-    console.log("transazione ok")
+    console.log("transazione ok");
     res.json({ success: true, message: "Modifica avvenuta con successo" });
   } catch (error) {
-    console.log("Errore transazione modifica:", error);
+    console.error("Errore transazione modifica:", error.stack || error);
     res.status(500).json({ error: error.message });
   }
 });
+// router.put('/transaction/mod', (req, res) => {
+//   const { parts_id, new_parts_id, parts_name, color_id, section_id, quantity } = req.body; 
+//   console.log("Valori ricevuti:", { parts_id, new_parts_id, parts_name, color_id, section_id, quantity });
+
+//   const transaction = db.transaction(() => {
+    
+//     const updateInventory = db.prepare(
+//       "UPDATE inventory SET part_id = ?, color_id = ?, section_id = ?, quantity = ? WHERE part_id = ?"
+//     );
+//     updateInventory.run(new_parts_id, color_id, section_id, quantity, parts_id);
+//     console.log("Righe aggiornate in inventory:");
+//     const updatePart = db.prepare("UPDATE parts SET id = ?, name = ? WHERE id = ?");
+//     updatePart.run(new_parts_id, parts_name, parts_id);
+//     console.log("Righe aggiornate in parts:");
+//   });
+  
+//   try {
+//     transaction();
+//     console.log("transazione ok")
+//     res.json({ success: true, message: "Modifica avvenuta con successo" });
+//   } catch (error) {
+//     console.log("Errore transazione modifica:", error);
+//     res.status(500).json({ error: error.message });
+//   }
+// });
 
 //transazione con inserimento pezzo e poi inventory
 router.post('/transaction',(req,res)=>{
