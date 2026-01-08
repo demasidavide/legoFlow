@@ -2,7 +2,7 @@ import "./FormInv.css";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import { useState, useEffect } from "react";
-import axios from "axios";   
+import axios from "axios";
 
 function FormInv() {
   //salvataggio dati letti dalle tabelle
@@ -94,6 +94,7 @@ function FormInv() {
         <h2 className="title">INSERISCI POSIZIONE</h2>
         <label>Cassettiera</label>
         <select
+          required
           onChange={(e) => {
             setSelCont(e.target.value);
           }}
@@ -107,6 +108,7 @@ function FormInv() {
         </select>
         <label>Cassetto</label>
         <select
+          required
           onChange={(e) => {
             setSelDraw(e.target.value);
           }}
@@ -120,9 +122,9 @@ function FormInv() {
         </select>
         <label>Sezione</label>
         <select
+          required
           onChange={(e) => {
             setSelSect(e.target.value);
-            
           }}
         >
           <option value="">Seleziona...</option>
@@ -134,6 +136,7 @@ function FormInv() {
         </select>
         <h2 className="title">INSERISCI PEZZO</h2>
         <input
+          required
           type="text"
           placeholder="Inserisci ID"
           onChange={(e) => {
@@ -141,6 +144,7 @@ function FormInv() {
           }}
         ></input>
         <input
+          required
           type="text"
           placeholder="Inserisci nome"
           onChange={(e) => {
@@ -149,6 +153,7 @@ function FormInv() {
         ></input>
         <br></br>
         <input
+          required
           type="number"
           placeholder="Quantità"
           min={0}
@@ -158,6 +163,7 @@ function FormInv() {
         ></input>
         <label>Colore</label>
         <select
+          required
           onChange={(e) => {
             setSelCol(e.target.value);
             handleColors();
