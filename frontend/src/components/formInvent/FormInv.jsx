@@ -71,14 +71,21 @@ function FormInv() {
         }
       );
       if (res.status === 200) {
-        setMessageOk(true); 
+        setMessageOk(true);
         setTimeout(() => {
-          setMessageOk(false); 
-          window.location.reload(); 
+          setMessageOk(false);
+          window.location.reload();
         }, 3000);
       }
-      window.location.reload();
-    } catch (error) {}
+    } catch (error) {
+      if (res.status === 400 || 500 || 404 || 403) {
+        setMessageNo(true);
+        setTimeout(() => {
+          setMessageNo(false);
+          window.location.reload();
+        }, 3000);
+      }
+    }
   };
 
   return (
@@ -167,19 +174,15 @@ function FormInv() {
         <button type="submit">Inserisci</button>
       </form>
       <Stack sx={{ width: "100%" }} spacing={2}>
-        {messageOk ? (
+        {messageOk && (
           <Alert variant="filled" severity="success">
-            This is a filled success Alert.
+            Inserimento avvenuto con successo!
           </Alert>
-        ) : (
-          ""
         )}
-        {messageNo ? (
+        {messageNo && (
           <Alert variant="filled" severity="error">
-            This is a filled error Alert.
+            Errore-Inserimento non riuscito
           </Alert>
-        ) : (
-          ""
         )}
       </Stack>
     </>
