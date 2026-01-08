@@ -9,6 +9,30 @@ router.get('/read',(req,res)=>{
   ).all();
   res.json(rowInv);
 })
+//get per totale di tutte le quantita per cardTot in Home.jsx
+router.get('/read/tot', (req, res) => {
+  try {
+    const total = db.prepare(`
+      SELECT SUM(quantity) AS total_quantity FROM inventory
+    `).get();
+    res.json(total); 
+  } catch (error) {
+    console.log("Errore totale quantità:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+//get per totale record con quantita inferirore a 10 per cardWar in Home.jsx
+router.get('/read/low', (req, res) => {
+  try {
+    const count = db.prepare(`
+      SELECT COUNT(*) AS count_low_quantity FROM inventory WHERE quantity < 10
+    `).get();
+    res.json(count);  // Restituisce { count_low_quantity: 5 }
+  } catch (error) {
+    console.log("Errore count low quantity:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
 //read per leggere tutti i dati da modificare in base a id parts selezionato
 router.get('/read/mod',(req,res)=>{
   const {id} = req.query;

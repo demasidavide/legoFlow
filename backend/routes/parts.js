@@ -8,6 +8,12 @@ router.get('/read',(req,res)=>{
         SELECT * FROM parts`).all();
         return res.json(rowParts);
 })
+//get per totale parts per card in Home.jsx
+router.get('/read/tot',(req,res)=>{
+    const rowParts = db.prepare(`
+        SELECT COUNT(*) AS total FROM parts`).get();
+        return res.json(rowParts);
+})
 
 //post per inserimento parts con controllo su id
 router.post('/add',(req,res)=>{
