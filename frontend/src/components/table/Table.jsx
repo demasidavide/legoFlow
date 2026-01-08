@@ -77,6 +77,7 @@ function Table() {
                   <FormModIns
                     close={() => setIdMod(null)}
                     idOld={i.part_id}
+                    onSuccess={() => setIdMod(null)}
                   ></FormModIns>
                 ) : (
                   ""

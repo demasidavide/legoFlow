@@ -2,7 +2,7 @@ import "./FormInv.css";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "axios";   
 
 function FormInv() {
   //salvataggio dati letti dalle tabelle

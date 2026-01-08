@@ -13,8 +13,9 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 
-function FormModIns({ close, idOld }) {
+function FormModIns({ close, idOld, onSuccess}) {
   const navigate = useNavigate();
+
   //salvataggio dati letti dalle tabelle
   const [containers, setContainers] = useState([]);
   const [drawers, setDrawers] = useState([]);
@@ -31,6 +32,8 @@ function FormModIns({ close, idOld }) {
   const [selPartName, setSelPartName] = useState("");
   const [selPartQta, setSelPartQta] = useState("");
   const [selColName, setSelColName] = useState("");
+  const [messageOk, setMessageOk] = useState(false);
+  const [messageNo, setMessageNo] = useState(false);
   //valori per submit
   const [selectedCont, setSelectedCont] = useState("");
   const [selectedDraw, setSelectedDraw] = useState("");
@@ -41,7 +44,6 @@ function FormModIns({ close, idOld }) {
   const [selectedPartQta, setSelectedPartQta] = useState("");
   const [selectedColName, setSelectedColName] = useState("");
 
-  
   //useEffect per caricare i dati selezionati dall utente da modificare--------------
   useEffect(() => {
     if (rowOld.length > 0) {
@@ -157,9 +159,24 @@ function FormModIns({ close, idOld }) {
         }
       );
       console.log("Richiesta riuscita:", res.status);
+      if (res.status === 200) {
+        setMessageOk(true);
+        setTimeout(() => {
+          setMessageOk(false);
+          onSuccess();
+          window.location.reload();
+        }, 3000);
+      }
       navigate("/Insert");
     } catch (error) {
       console.log("Errore nella richiesta:", error);
+      if (res.status === 400 || 500 || 404 || 403) {
+        setMessageNo(true);
+        setTimeout(() => {
+          setMessageNo(false);
+          window.location.reload();
+        }, 3000);
+      }
       console.log(error);
     }
   };
@@ -334,6 +351,18 @@ function FormModIns({ close, idOld }) {
         ></input>
         <br></br>
         <button type="submit">Modifica</button>
+        <Stack sx={{ width: "100%" }} spacing={2}>
+          {messageOk && (
+            <Alert variant="filled" severity="success">
+              Inserimento avvenuto con successo!
+            </Alert>
+          )}
+          {messageNo && (
+            <Alert variant="filled" severity="error">
+              Errore-Inserimento non riuscito
+            </Alert>
+          )}
+        </Stack>
       </form>
     </>
   );
